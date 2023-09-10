@@ -13,12 +13,17 @@ public class Ball : MonoBehaviour
     // 円の半径
     public float radius;
 
+    public LineJudge l1;
+    public LineJudge l2;
+    public LineJudge l3;
+    public LineJudge l4;
+
     public GameObject text;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -38,10 +43,20 @@ public class Ball : MonoBehaviour
         {
             // 触れていたらメッセージを表示する
             text.GetComponent<TMP_Text>().text = "IN";
+
+            l1.In(ball, court);
+            l2.In(ball, court);
+            l3.In(ball, court);
+            l4.In(ball, court);
         }
         else
         {
             text.GetComponent<TMP_Text>().text = "OUT";
+
+            l1.Out(ball, court);
+            l2.Out(ball, court);
+            l3.Out(ball, court);
+            l4.Out(ball, court);
         }
     }
 
