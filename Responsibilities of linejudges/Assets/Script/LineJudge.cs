@@ -162,4 +162,82 @@ public class LineJudge : MonoBehaviour
                 break;
         }
     }
+
+    public void BallContact(GameObject ball, GameObject court)
+    {
+        // 円の中心座標を取得する
+        Vector2 ballCenter = ball.transform.position;
+        // 四角の中心座標を取得する
+        Vector2 courtCenter = court.transform.position;
+
+        // 四角の幅と高さを取得する
+        float courtWidth = court.transform.localScale.x;
+        float courtHeight = court.transform.localScale.y;
+
+        switch (name)
+        {
+            case "L1":
+
+                if(ballCenter.x < 0)
+                {
+                    ColorChange(Color.red);
+                }
+                else if (ballCenter.y > (courtCenter.y + (courtHeight/2)))
+                {
+                    ColorChange(Color.red);
+                }
+                else
+                {
+                    ColorChange(Color.white);
+                }
+                break;
+
+            case "L2":
+                if (ballCenter.x < 0)
+                {
+                    ColorChange(Color.red);
+                }
+                else if (ballCenter.x < (courtCenter.x - (courtWidth/2)))
+                {
+                    ColorChange(Color.red);
+                }
+                else
+                {
+                    ColorChange(Color.white);
+                }
+                break;
+
+            case "L3":
+                if (ballCenter.x > 0)
+                {
+                    ColorChange(Color.red);
+                }
+                else if (ballCenter.y < (courtCenter.y - (courtHeight/2)))
+                {
+                    ColorChange(Color.red);
+                }
+                else
+                {
+                    ColorChange(Color.white);
+                }
+                break;
+
+            case "L4":
+                if (ballCenter.x > 0)
+                {
+                    ColorChange(Color.red);
+                }
+                else if (ballCenter.x > (courtCenter.x + (courtWidth/2)))
+                {
+                    ColorChange(Color.red);
+                }
+                else
+                {
+                    ColorChange(Color.white);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

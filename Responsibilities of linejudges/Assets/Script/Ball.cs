@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Ball : MonoBehaviour
     public GameObject court;
     // â~ÇÃîºåa
     public float radius;
+
+    public Toggle toggle;
 
     public LineJudge l1;
     public LineJudge l2;
@@ -23,13 +26,13 @@ public class Ball : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        toggle.onValueChanged.AddListener(changeToggleEvent);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnMouseDrag()
@@ -38,7 +41,11 @@ public class Ball : MonoBehaviour
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         transform.position = objPosition;
 
-        // â~Ç∆éläpÇ™êGÇÍÇƒÇ¢ÇÈÇ©îªíËÇ∑ÇÈ
+        Judge();
+    }
+
+    void Judge()
+    {
         if (IsBallInsideCourt())
         {
             // êGÇÍÇƒÇ¢ÇΩÇÁÉÅÉbÉZÅ[ÉWÇï\é¶Ç∑ÇÈ
@@ -51,12 +58,22 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            text.GetComponent<TMP_Text>().text = "OUT";
-
-            l1.Out(ball, court);
-            l2.Out(ball, court);
-            l3.Out(ball, court);
-            l4.Out(ball, court);
+            if (toggle.isOn)
+            {
+                text.GetComponent<TMP_Text>().text = "BALL CONTACT";
+                l1.BallContact(ball, court);
+                l2.BallContact(ball, court);
+                l3.BallContact(ball, court);
+                l4.BallContact(ball, court);
+            }
+            else
+            {
+                text.GetComponent<TMP_Text>().text = "OUT";
+                l1.Out(ball, court);
+                l2.Out(ball, court);
+                l3.Out(ball, court);
+                l4.Out(ball, court);
+            }
         }
     }
 
@@ -77,16 +94,16 @@ public class Ball : MonoBehaviour
         float distanceToTop = Mathf.Abs(ballCenter.y - (courtCenter.y + courtHeight / 2));
 
         // éläpÇÃäeã˜Ç…ëŒÇµÇƒç≈íZãóó£ÇåvéZÇ∑ÇÈ
-        float distanceToLeftTopCorner = Mathf.Sqrt(Mathf.Pow(distanceToLeft, 2) + Mathf.Pow(distanceToTop,2));
+        float distanceToLeftTopCorner = Mathf.Sqrt(Mathf.Pow(distanceToLeft, 2) + Mathf.Pow(distanceToTop, 2));
         float distanceToLeftBottomCorner = Mathf.Sqrt(Mathf.Pow(distanceToLeft, 2) + Mathf.Pow(distanceToBottom, 2));
-        float distanceToRightTopCorner = Mathf.Sqrt(Mathf.Pow(distanceToRight, 2) + Mathf.Pow(distanceToTop,2));
+        float distanceToRightTopCorner = Mathf.Sqrt(Mathf.Pow(distanceToRight, 2) + Mathf.Pow(distanceToTop, 2));
         float distanceToRightBottomCorner = Mathf.Sqrt(Mathf.Pow(distanceToRight, 2) + Mathf.Pow(distanceToBottom, 2));
 
 
-        if(Mathf.Abs(ballCenter.x) < 9 && Mathf.Abs(ballCenter.y) < 5)
+        if (Mathf.Abs(ballCenter.x) < 9 && Mathf.Abs(ballCenter.y) < 5)
         {
             Debug.Log("Ball is touching a court! (1)");
-                        return true;
+            return true;
         }
         else if (Mathf.Abs(ballCenter.x) < 9.5 && Mathf.Abs(ballCenter.y) < 4.5)
         {
@@ -104,5 +121,10 @@ public class Ball : MonoBehaviour
             Debug.Log("Ball is not inside a court!");
             return false; ;
         }
+    }
+
+    void changeToggleEvent(bool isActive)
+    {
+        Judge();
     }
 }
