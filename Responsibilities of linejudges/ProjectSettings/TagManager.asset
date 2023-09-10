@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ball
+    uniqueID: 1534134233
+    locked: 0
+  - name: Court
+    uniqueID: 1412442873
+    locked: 0
